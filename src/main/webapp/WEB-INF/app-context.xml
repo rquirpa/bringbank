@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <sec:authentication-manager>
+        <sec:authentication-provider>
+            <sec:user-service>
+                <sec:user name="user" password="{noop}password" authorities="ROLE_USER"></sec:user>
+            </sec:user-service>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+    <sec:http auto-config='true'>
+        <sec:intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+    </sec:http>
+
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="com.bringglobal.bank.controllers"/>
+    <mvc:default-servlet-handler/>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"></bean>
+
+    <bean id="ListTransactionsService"
+          class="com.bringglobal.bank.services.ListTransactions"></bean>
+
+    <bean id="ListTransanctionsByTransactionType"
+          class="com.bringglobal.bank.services.ListTransactionsByTransactionType"></bean>
+
+    <bean id="GroupTransactionsByTransactionType"
+          class="com.bringglobal.bank.services.GroupTransactionsByTransactionType"></bean>
+
+</beans>
